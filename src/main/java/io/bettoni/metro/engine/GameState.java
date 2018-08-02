@@ -35,6 +35,14 @@ public class GameState {
 		if (configuration == null) {
 			throw new IllegalArgumentException("Configuration can not be null");
 		}
+
+		if (configuration.getBoardSize() < 3 || configuration.getBoardSize() > 10) {
+			throw new IllegalArgumentException("Board size must be between 3 and 10");
+		}
+
+		if (configuration.getPlayers() == null || configuration.getPlayers().isEmpty()) {
+			throw new IllegalArgumentException("Players must be informed");
+		}
 	}
 
 	public GameStatus getStatus() {

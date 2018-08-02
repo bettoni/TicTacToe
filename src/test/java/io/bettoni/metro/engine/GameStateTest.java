@@ -16,7 +16,7 @@ public class GameStateTest {
 
 	@Before
 	public void setUp() {
-		gameState = new GameState(createValidConfiguration(1));
+		gameState = new GameState(createValidConfiguration(3, 1));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -25,6 +25,28 @@ public class GameStateTest {
 		gameState.startNewGame();
 
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void should_throw_exception_if_board_size_is_greater_than_10() {
+		gameState = new GameState(createValidConfiguration(11, 1));
+		gameState.startNewGame();
+
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void should_throw_exception_if_board_size_is_smaller_than_3() {
+		gameState = new GameState(createValidConfiguration(2, 1));
+		gameState.startNewGame();
+
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void should_throw_exception_if_players_were_not_informed() {
+		gameState = new GameState(createValidConfiguration(3, 0));
+		gameState.startNewGame();
+
+	}
+
 
 	@Test
 	public void should_return_running_status_when_start_a_game() {
@@ -78,7 +100,7 @@ public class GameStateTest {
 
 	@Test
 	public void should_tie_the_game_when_board_is_full_filled() {
-		gameState = new GameState(createValidConfiguration(3));
+		gameState = new GameState(createValidConfiguration(3, 3));
 		gameState.startNewGame();
 
 		for (int row = 0; row < gameState.getBoard().getSize(); row++) {
@@ -91,9 +113,9 @@ public class GameStateTest {
 		Assert.assertEquals(GameStatus.DRAW, gameState.getStatus());
 	}
 
-	private GameConfiguration createValidConfiguration(int numberOfPlayers) {
+	private GameConfiguration createValidConfiguration(int boardSize, int numberOfPlayers) {
 		List<Player> players = createPlayers(numberOfPlayers);
-		return new GameConfiguration(3, players);
+		return new GameConfiguration(boardSize, players);
 	}
 
 	private List<Player> createPlayers(int numberOfPlayers) {
